@@ -1,9 +1,14 @@
 ﻿# OTI-Projekti
 
+Branch organisaatio: <br>
+"develop" branchiin voi tallentaa muutoksia vapaasti. <br>
+"main" branchiin tallennetaan valmiita toimintoja.
+
 Käytännöllisiä github komentoja:
 
 Github repositioon yhdistäminen: <br>
-git remote add origin https://github.com/Sakaarii/OTI-Projekti.git
+Intellij: File -> New -> Project from Version Control -> https://github.com/Sakaarii/OTI-Projekti.git <br>
+(Kaikki alla olevat komennot löytyvät myös intellij version hallinnasta)
 
 uudituksien vetäminen: <br>
 git pull https://github.com/Sakaarii/OTI-Projekti.git
