@@ -133,7 +133,7 @@ public class SQLDriver {
 
     public static void main(String[] args) {
 
-        SQLDriver driver = new SQLDriver();
+//        SQLDriver driver = new SQLDriver();
 
 
 //        EXAMPLE updateTable:
@@ -153,7 +153,7 @@ public class SQLDriver {
 
 
 //        EXAMPLE returnAllQuery:
-        ArrayList<ArrayList<String>> list = driver.returnAllQuery("select * from actor");
-        System.out.println(list);
+//        ArrayList<ArrayList<String>> list = driver.returnAllQuery("select * from actor");
+//        System.out.println(list);
     }
 }
