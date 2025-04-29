@@ -1,4 +1,4 @@
-package oti.projekti.sqlintegerationdemo;
+package oti.projekti.mokki;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class SQLDriver {
     protected String connection = "jdbc:mysql://localhost:3306/sakila";
     // A username and password that can access the MySQL database;
     protected String name = "root";
-    protected String password = "6351";
+    protected String password = "1234";
 
     // Initializing a driver with new database information.
     SQLDriver(String connection, String userName, String userPassword) {
