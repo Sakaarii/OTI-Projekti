@@ -57,7 +57,7 @@ public class NewHousePanel extends Application {
         root.getChildren().add(infoGridPane);
         root.getChildren().add(new Separator());
         root.getChildren().add(buttonOnly);
-        root.setPadding(new Insets(10));
+        root.setPadding(new Insets(15));
 
 
         //NAPPI JOKA LUO
@@ -100,9 +100,11 @@ public class NewHousePanel extends Application {
                 System.out.println("Error: " + ex.getMessage());
             }
 
+            primaryStage.close();
+
         });
 
-        Scene scene = new Scene(root,300,183);
+        Scene scene = new Scene(root,300,190);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Uuden mökin tiedot");
         primaryStage.show();

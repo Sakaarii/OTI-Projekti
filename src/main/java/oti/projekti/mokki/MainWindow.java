@@ -42,7 +42,7 @@ public class MainWindow extends Application {
         resetList();
 
         Text titleText = new Text("Mökkijärjestelmä");
-        titleText.setFont(Font.font("Arial", FontWeight.BOLD, 25));
+        titleText.setFont(Font.font("Consolas", FontWeight.BOLD, 25));
 
         Separator titleSeparator = new Separator();
         titleSeparator.setMaxWidth(200);

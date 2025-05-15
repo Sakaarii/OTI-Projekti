@@ -47,8 +47,8 @@ public class VarauksetPanel extends Application {
             primaryStage.close();
         });
 
-        varausGridPane.setHgap(10);
-        varausGridPane.setVgap(8);
+        varausGridPane.setHgap(5);
+        varausGridPane.setVgap(5);
 
         Label alkupvmLabel = new Label("Alku pvm:");
         Label loppupvmLabel = new Label("Loppu pvm:");

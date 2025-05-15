@@ -69,7 +69,7 @@ public class TiedotPanel extends Application {
 
         buttonHBox.getChildren().addAll(tallennaButton, peruutaButton);
 
-        mainVBox.getChildren().addAll(tietoGridPane, varauksetSection,buttonHBox);
+        mainVBox.getChildren().addAll(tietoGridPane, varauksetSection, new Separator(), buttonHBox);
 
         muokkaaButton.setOnAction(event -> muokkaaAction());
 
@@ -103,8 +103,8 @@ public class TiedotPanel extends Application {
     //Creates a gridpane that shows all the information
     private GridPane createTiedotSection() {
         GridPane tietoGridPane = new GridPane();
-        tietoGridPane.setHgap(10);
-        tietoGridPane.setVgap(8);
+        tietoGridPane.setHgap(5);
+        tietoGridPane.setVgap(5);
 
         Label mokkinroLabel = new Label("Mökkinro:");
         Label osoiteLabel = new Label("Osoite:");

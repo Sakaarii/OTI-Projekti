@@ -3,6 +3,7 @@ package oti.projekti.mokki;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 // Samuel Sakari Paunonen
@@ -32,7 +33,7 @@ public class SQLDriver {
     // accessible by an ArrayList.
     public Map<String, ArrayList<String>> tableQuery(String queryTable, String keyValue, String[] queryValues){
 
-        Map<String, ArrayList<String>> results = new HashMap<>();
+        Map<String, ArrayList<String>> results = new LinkedHashMap<>();
 
         try{
 

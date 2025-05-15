@@ -83,7 +83,7 @@ public class NewReservationPanel extends Application {
         gridPane.add(textFieldMokkiTunnus,1,0);
 
         VBox root = new VBox(15);
-        root.setPadding(new Insets(10));
+        root.setPadding(new Insets(15));
         root.getChildren().add(hBoxRadioButtons1);
         root.getChildren().add(new Separator());
         root.getChildren().add(hBox);
@@ -195,6 +195,10 @@ public class NewReservationPanel extends Application {
             } catch (Exception ex) {
                 System.out.println("Error: " + ex.getMessage());
             }
+
+            //ikkuna sulkeutuu kun painaa "Tallenna nappia"
+            primaryStage.close();
+
         });
 
         Scene scene = new Scene(root,250,370);
@@ -209,7 +213,7 @@ public class NewReservationPanel extends Application {
 
         try {
 
-            Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/mokkikodit","root","Tammikuu2024");
+            Connection conn = DriverManager.getConnection(MainWindow.connection,MainWindow.userName,MainWindow.userPassword);
 
             PreparedStatement stmt = conn.prepareStatement(query);
 
