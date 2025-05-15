@@ -115,7 +115,7 @@ public class NewReservationPanel extends Application {
             long length = ChronoUnit.DAYS.between(startDate,endDate);
 
             //tarkistaa että tekstikentät eivät ole tyhjät, mutta mökintunnus voi vielä olla
-            if (etunimi.isEmpty() || sukunimi.isEmpty() || sahkoposti.isEmpty() || tilinumero.isEmpty()
+            if (etunimi.isEmpty() || sukunimi.isEmpty() || sahkoposti.isEmpty() || (tilinumero.isEmpty() && buttonNew.isSelected())
                     || startDate == null || endDate == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Tekstikentät ei voi olla tyhjiä");
                 alert.showAndWait();
@@ -189,6 +189,7 @@ public class NewReservationPanel extends Application {
                 stmt.close();
                 conn.close();
 
+                MainWindow.checkReservedSituation();
                 MainWindow.resetList();
                 //MainWindow.listView.getItems().add(stringy);
 
@@ -197,6 +198,7 @@ public class NewReservationPanel extends Application {
             }
 
             //ikkuna sulkeutuu kun painaa "Tallenna nappia"
+
             primaryStage.close();
 
         });

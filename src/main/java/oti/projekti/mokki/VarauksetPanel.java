@@ -1,5 +1,6 @@
 package oti.projekti.mokki;
 
+import com.sun.tools.javac.Main;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -118,6 +119,7 @@ public class VarauksetPanel extends Application {
             stmt.close();
             conn.close();
 
+            MainWindow.checkReservedSituation();
             MainWindow.resetList();
             //MainWindow.listView.getItems().add(stringy);
 
