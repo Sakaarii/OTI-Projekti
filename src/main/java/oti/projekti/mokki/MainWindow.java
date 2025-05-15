@@ -1,14 +1,11 @@
 package oti.projekti.mokki;
 
 import javafx.application.Application;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -16,8 +13,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.time.InstantSource;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -44,71 +39,49 @@ public class MainWindow extends Application {
     public void start(Stage primaryStage) {
 
         listView.setEditable(false);
-
         resetList();
 
-        Text text = new Text("Mökkijärjestelmä");
-        text.setFont(Font.font("Arial",25));
+        Text titleText = new Text("Mökkijärjestelmä");
+        titleText.setFont(Font.font("Arial", 25));
 
+        Button buttonRefreshList = new Button("Päivitä Lista");
+        Button buttonCustomer = new Button("Asiakkaat");
+        Button buttonNewHouse = new Button("Uusi Mökki");
         Button buttonNewReservation = new Button("Uusi Varaus");
 
-        Button buttonNewHouse = new Button("Create new");
-        /*
-        Here goes the call to open the new window which is used to create a new mökki.
-         */
+        Rectangle titleRectangle = new Rectangle(0, 0, 200, 50);
+        titleRectangle.setFill(Color.TRANSPARENT);
+        titleRectangle.setStroke(Color.BLACK);
 
-        Button buttonMain = new Button("Pääikkuna");
+        StackPane stackPaneTitle = new StackPane();
+        stackPaneTitle.getChildren().addAll(titleRectangle, titleText);
 
-        Button buttonCustomer = new Button("Asiakkaat");
+        HBox hBoxNavigationButtons = new HBox(20);
+        hBoxNavigationButtons.getChildren().addAll( buttonCustomer, buttonRefreshList);
+        hBoxNavigationButtons.setAlignment(Pos.CENTER);
 
-        Rectangle rectangle1 = new Rectangle(0,0,200,50);
-        rectangle1.setFill(Color.TRANSPARENT);
-        rectangle1.setStroke(Color.BLACK);
+        VBox vBoxTopSection = new VBox(10);
+        vBoxTopSection.getChildren().addAll(stackPaneTitle, hBoxNavigationButtons);
+        vBoxTopSection.setPadding(new Insets(10, 10, 0, 10));
+        vBoxTopSection.setAlignment(Pos.CENTER);
 
-        Rectangle rectangle2 = new Rectangle(0,0,100,100);
-        rectangle2.setFill(Color.TRANSPARENT);
-        rectangle2.setStroke(Color.BLACK);
+        VBox vBoxCenterSection = new VBox(10);
+        vBoxCenterSection.getChildren().add(listView);
+        vBoxCenterSection.setAlignment(Pos.CENTER);
+        vBoxCenterSection.setPadding(new Insets(20, 20, 20, 20));
 
-        Rectangle rectangle3 = new Rectangle(0,0,100,100);
-        rectangle2.setFill(Color.TRANSPARENT);
-        rectangle2.setStroke(Color.BLACK);
+        HBox hBoxButtonSection = new HBox(20);
+        hBoxButtonSection.getChildren().addAll(buttonNewHouse, buttonNewReservation);
+        hBoxButtonSection.setPadding(new Insets(0, 10, 20, 20));
+        hBoxButtonSection.setAlignment(Pos.CENTER_LEFT);
 
-        primaryStage.setTitle("Title");
+        BorderPane rootPane = new BorderPane();
+        rootPane.setTop(vBoxTopSection);
+        rootPane.setCenter(vBoxCenterSection);
+        rootPane.setBottom(hBoxButtonSection);
 
-        VBox vBoxCenterRoot = new VBox(10);
-        vBoxCenterRoot.getChildren().add(listView);
-        vBoxCenterRoot.setAlignment(Pos.CENTER);
-        vBoxCenterRoot.setPadding(new Insets(20,20,20,20));
-
-        StackPane stackPaneTop = new StackPane();
-        stackPaneTop.getChildren().addAll(text,rectangle1);
-
-        HBox hBoxMains = new HBox();
-        hBoxMains.getChildren().addAll(buttonMain,buttonCustomer);
-        hBoxMains.setAlignment(Pos.CENTER);
-
-        VBox vBoxTopRoot = new VBox();
-        vBoxTopRoot.getChildren().addAll(stackPaneTop,hBoxMains);
-        vBoxTopRoot.setPadding(new Insets(10,10,10,10));
-
-        StackPane stackPaneRightRoot = new StackPane();
-        stackPaneRightRoot.getChildren().addAll(rectangle2,buttonNewHouse);
-        stackPaneRightRoot.setPadding(new Insets(10,10,10,10));
-
-        StackPane stackPaneRightRoot2 = new StackPane();
-        stackPaneRightRoot2.getChildren().addAll(rectangle3,buttonNewReservation);
-        stackPaneRightRoot2.setPadding(new Insets(10,10,10,10));
-
-        VBox vBoxRightRoot = new VBox();
-        vBoxRightRoot.getChildren().addAll(stackPaneRightRoot,stackPaneRightRoot2);
-
-        BorderPane root = new BorderPane();
-        root.setTop((vBoxTopRoot));
-        root.setCenter(vBoxCenterRoot);
-        root.setRight(vBoxRightRoot);
-
-        primaryStage.setTitle("Title");
-        Scene scene = new Scene(root,500,500);
+        Scene scene = new Scene(rootPane, 500, 500);
+        primaryStage.setTitle("Mökkivarausjärjestelmä");
         primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -116,7 +89,7 @@ public class MainWindow extends Application {
         // UUSIEN TASOJEN AVAAMISNAPIT
         buttonNewHouse.setOnAction(actionEvent -> {
             secondaryStage = new Stage();
-            CreateNewHouse createHouse = new CreateNewHouse();
+            NewHousePanel createHouse = new NewHousePanel();
             createHouse.start(secondaryStage);
         });
 
@@ -128,9 +101,11 @@ public class MainWindow extends Application {
 
         buttonNewReservation.setOnAction(actionEvent -> {
             secondaryStage = new Stage();
-            CreateReservation createReservation = new CreateReservation();
-            createReservation.start(secondaryStage);
+            ReservationPanel reservationPanel = new ReservationPanel();
+            reservationPanel.start(secondaryStage);
         });
+
+        buttonRefreshList.setOnAction((actionEvent -> resetList()));
 
     }
 

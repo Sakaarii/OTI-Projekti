@@ -20,7 +20,7 @@ public class Customers extends Application {
 
     //Asiakasta ei voi poistaa jos hänellä on varauksia.
 
-    static ListView<Object> listView = new ListView<>();
+    static ListView<Object> listView;
 
     public static void main(String[] args) {
         launch(args);
@@ -41,6 +41,8 @@ public class Customers extends Application {
     //tekee listan asiakkaista ja varauksista
 
     private static void resetCustomer(){
+
+        listView = new ListView<>();
 
         listView.getItems().clear();
 

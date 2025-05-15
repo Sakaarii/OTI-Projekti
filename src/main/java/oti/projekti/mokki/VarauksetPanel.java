@@ -51,11 +51,11 @@ public class VarauksetPanel extends Application {
         varausGridPane.setHgap(10);
         varausGridPane.setVgap(8);
 
-        Label alkupvmLabel = new Label("Alku pvm");
-        Label loppupvmLabel = new Label("Loppu pvm");
-        Label kestoLabel = new Label("Kesto (pv)");
-        Label nimiLabel = new Label("Varaajan nimi");
-        Label spostiLabel = new Label("Varaajan Sähköposti");
+        Label alkupvmLabel = new Label("Alku pvm:");
+        Label loppupvmLabel = new Label("Loppu pvm:");
+        Label kestoLabel = new Label("Kesto (pv):");
+        Label nimiLabel = new Label("Varaajan nimi:");
+        Label spostiLabel = new Label("Varaajan Sähköposti:");
 
         alkupvmTextField.setEditable(false);
         loppupvmTextField.setEditable(false);

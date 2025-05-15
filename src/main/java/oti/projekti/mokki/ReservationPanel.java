@@ -15,18 +15,16 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Date;
 
-public class CreateReservation extends Application {
+public class ReservationPanel extends Application {
 
-    Text textMokkiTunnus = new Text("Mökin Tunnus");
-    Text textEtunimi = new Text("Etunimi");
-    Text textSukunimi = new Text("Sukunimi");
-    Text textSposti = new Text("Sähköposti");
-    Text textTilinumero = new Text("Tilinumero");
+    Text textMokkiTunnus = new Text("Mökin Tunnus:");
+    Text textEtunimi = new Text("Etunimi:");
+    Text textSukunimi = new Text("Sukunimi:");
+    Text textSposti = new Text("Sähköposti:");
+    Text textTilinumero = new Text("Tilinumero:");
 
     TextField textFieldMokkiTunnus = new TextField();
     TextField textFieldEtunimi = new TextField();
@@ -46,10 +44,10 @@ public class CreateReservation extends Application {
         DatePicker datePickerStart = new DatePicker();
         DatePicker datePickerEnd = new DatePicker();
 
-        Button buttonOnly = new Button("Create");
+        Button buttonOnly = new Button("Tallenna");
 
-        Text text1 = new Text("Start Date:");
-        Text text2 = new Text("End Date:");
+        Text startDateText = new Text("Alku:");
+        Text endDateText = new Text("Loppu:");
 
         RadioButton buttonNew = new RadioButton("Uusi Asiakas");
         RadioButton buttonOld = new RadioButton("Vanha asiakas");
@@ -62,21 +60,24 @@ public class CreateReservation extends Application {
 
         RadioButton buttonCustomer = new RadioButton("Asiakas");
         RadioButton buttonBusiness = new RadioButton("Yritys");
-        HBox hBoxRadioButtons2 = new HBox(10);
+        HBox hBoxRadioButtons2 = new HBox(36);
         hBoxRadioButtons2.getChildren().addAll(buttonCustomer,buttonBusiness);
 
         ToggleGroup radioButtonToggle2 = new ToggleGroup();
         radioButtonToggle2.getToggles().addAll(buttonBusiness,buttonCustomer);
 
-        VBox vBox = new VBox();
-        VBox vBox1 = new VBox();
-        HBox hBox = new HBox();
+        VBox vBox = new VBox(5);
+        VBox vBox1 = new VBox(15);
+        vBox1.setPadding(new Insets(3,0,0,0));
+        HBox hBox = new HBox(20);
 
-        vBox1.getChildren().addAll(text1,text2);
+        vBox1.getChildren().addAll(startDateText,endDateText);
         vBox.getChildren().addAll(datePickerStart,datePickerEnd);
         hBox.getChildren().addAll(vBox1,vBox);
 
         GridPane gridPane = new GridPane();
+        gridPane.setVgap(5);
+        gridPane.setHgap(5);
         gridPane.add(textEtunimi,0,0);
         gridPane.add(textSukunimi,0,1);
         gridPane.add(textSposti,0,2);
@@ -89,7 +90,8 @@ public class CreateReservation extends Application {
         gridPane.add(textFieldTilinumero,1,3);
         gridPane.add(textFieldMokkiTunnus,1,4);
 
-        VBox root = new VBox(10);
+        VBox root = new VBox(15);
+        root.setPadding(new Insets(10));
         root.getChildren().add(hBox);
         root.getChildren().add(hBoxRadioButtons1);
         root.getChildren().add(hBoxRadioButtons2);
@@ -164,8 +166,9 @@ public class CreateReservation extends Application {
             }
         });
 
-        Scene scene = new Scene(root,300,300);
+        Scene scene = new Scene(root,300,340);
         primaryStage.setScene(scene);
+        primaryStage.setTitle("Uuden varauksen tiedot");
         primaryStage.show();
     }
 }

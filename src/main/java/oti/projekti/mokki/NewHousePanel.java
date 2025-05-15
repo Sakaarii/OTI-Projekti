@@ -1,11 +1,10 @@
 package oti.projekti.mokki;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -15,19 +14,17 @@ import javafx.stage.Stage;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 
-public class CreateNewHouse extends Application {
+public class NewHousePanel extends Application {
 
     public static void main(String[] args) {
         launch(args);
     }
 
-    Text textOsoite = new Text("Mökin Osoite");
-    Text textId = new Text("Mökin ID");
-    Text textHinta = new Text("Mökin Hinta");
-    Text textKapasiteetti = new Text("Mökin max. kapasiteetti");
+    Text textOsoite = new Text("Mökin Osoite:");
+    Text textId = new Text("Mökin ID:");
+    Text textHinta = new Text("Mökin Hinta:");
+    Text textKapasiteetti = new Text("Mökin max. kapasiteetti:");
 
     TextField textFieldOsoite = new TextField();
     TextField textFieldId = new TextField();
@@ -38,7 +35,7 @@ public class CreateNewHouse extends Application {
     public void start(Stage primaryStage) {
 
 
-        Button buttonOnly = new Button("Create");
+        Button buttonOnly = new Button("Tallenna");
 
         VBox vBox = new VBox();
         VBox vBox1 = new VBox();
@@ -46,22 +43,25 @@ public class CreateNewHouse extends Application {
 
         hBox.getChildren().addAll(vBox1,vBox);
 
-        GridPane gridPane = new GridPane();
+        GridPane infoGridPane = new GridPane();
+        infoGridPane.setHgap(5);
+        infoGridPane.setVgap(5);
 
-        gridPane.add(textOsoite,0,0);
-        gridPane.add(textHinta,0,1);
-        gridPane.add(textId,0,2);
-        gridPane.add(textKapasiteetti,0,3);
+        infoGridPane.add(textOsoite,0,0);
+        infoGridPane.add(textHinta,0,1);
+        infoGridPane.add(textId,0,2);
+        infoGridPane.add(textKapasiteetti,0,3);
 
-        gridPane.add(textFieldOsoite,1,0);
-        gridPane.add(textFieldHinta,1,1);
-        gridPane.add(textFieldId,1,2);
-        gridPane.add(textFieldKapasiteetti,1,3);
+        infoGridPane.add(textFieldOsoite,1,0);
+        infoGridPane.add(textFieldHinta,1,1);
+        infoGridPane.add(textFieldId,1,2);
+        infoGridPane.add(textFieldKapasiteetti,1,3);
 
         VBox root = new VBox(10);
         root.getChildren().add(hBox);
-        root.getChildren().add(gridPane);
+        root.getChildren().add(infoGridPane);
         root.getChildren().add(buttonOnly);
+        root.setPadding(new Insets(10));
 
 
         //NAPPI JOKA LUO
@@ -99,8 +99,9 @@ public class CreateNewHouse extends Application {
 
         });
 
-        Scene scene = new Scene(root,300,300);
+        Scene scene = new Scene(root,300,185);
         primaryStage.setScene(scene);
+        primaryStage.setTitle("Uuden mökin tiedot");
         primaryStage.show();
     }
 }
