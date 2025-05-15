@@ -27,8 +27,6 @@ public class MainWindow extends Application {
     static String userPassword = "Tammikuu2024";
 
     static ListView<Object> listView = new ListView<>();
-    int x = 0;
-    static Button delete;
     static Stage secondaryStage;
 
     public static void main(String[] args) {

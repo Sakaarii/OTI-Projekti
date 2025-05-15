@@ -22,7 +22,7 @@ public class SQLDriver {
         this.connection = connection;
         this.name = userName;
         this.password = userPassword;
-    };
+    }
 
     SQLDriver() {};
 

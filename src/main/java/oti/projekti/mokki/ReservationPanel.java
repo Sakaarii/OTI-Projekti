@@ -110,13 +110,26 @@ public class ReservationPanel extends Application {
             LocalDate endDate = datePickerEnd.getValue();
             long length = ChronoUnit.DAYS.between(startDate,endDate);
 
-            //tarkistaa että tekstikentät eivät ole tyhjät, mutta ajankohat ja mökintunnus voi vielä olla
-            //Saattaa luoda virheen?
-            if (etunimi.isEmpty() || sukunimi.isEmpty() || sahkoposti.isEmpty() || tilinumero.isEmpty()) {
+            //tarkistaa että tekstikentät eivät ole tyhjät, mutta mökintunnus voi vielä olla
+            if (etunimi.isEmpty() || sukunimi.isEmpty() || sahkoposti.isEmpty() || tilinumero.isEmpty()
+                    || startDate == null || endDate == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Tekstikentät ei voi olla tyhjiä");
                 alert.showAndWait();
                 return;
             }
+
+            if (startDate.isAfter(endDate)){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Alkupäivämäärä ei voi olla loppupäivämäärän jälkeen");
+                alert.showAndWait();
+                return;
+            }
+
+            if (startDate.isBefore(LocalDate.now())){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Alkupäivämäärä ei voi olla menneisyydessä");
+                alert.showAndWait();
+                return;
+            }
+
 
             //tekee uuden asiakkaan. Jos ei paina uusi asiakas painiketta, ei yritä luoda uutta asiakasta, vaan hakee vaan asiakkaan databasesta
             if (buttonNew.isSelected()){
