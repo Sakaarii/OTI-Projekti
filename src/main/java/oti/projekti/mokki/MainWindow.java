@@ -6,10 +6,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Separator;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -40,26 +42,22 @@ public class MainWindow extends Application {
         resetList();
 
         Text titleText = new Text("Mökkijärjestelmä");
-        titleText.setFont(Font.font("Arial", 25));
+        titleText.setFont(Font.font("Arial", FontWeight.BOLD, 25));
+
+        Separator titleSeparator = new Separator();
+        titleSeparator.setMaxWidth(200);
 
         Button buttonRefreshList = new Button("Päivitä Lista");
         Button buttonCustomer = new Button("Asiakkaat");
         Button buttonNewHouse = new Button("Uusi Mökki");
         Button buttonNewReservation = new Button("Uusi Varaus");
 
-        Rectangle titleRectangle = new Rectangle(0, 0, 200, 50);
-        titleRectangle.setFill(Color.TRANSPARENT);
-        titleRectangle.setStroke(Color.BLACK);
-
-        StackPane stackPaneTitle = new StackPane();
-        stackPaneTitle.getChildren().addAll(titleRectangle, titleText);
-
         HBox hBoxNavigationButtons = new HBox(20);
         hBoxNavigationButtons.getChildren().addAll( buttonCustomer, buttonRefreshList);
         hBoxNavigationButtons.setAlignment(Pos.CENTER);
 
         VBox vBoxTopSection = new VBox(10);
-        vBoxTopSection.getChildren().addAll(stackPaneTitle, hBoxNavigationButtons);
+        vBoxTopSection.getChildren().addAll(titleText, titleSeparator, hBoxNavigationButtons);
         vBoxTopSection.setPadding(new Insets(10, 10, 0, 10));
         vBoxTopSection.setAlignment(Pos.CENTER);
 

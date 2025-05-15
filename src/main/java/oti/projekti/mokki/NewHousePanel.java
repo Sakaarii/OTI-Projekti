@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -38,12 +39,6 @@ public class NewHousePanel extends Application {
 
         Button buttonOnly = new Button("Tallenna");
 
-        VBox vBox = new VBox();
-        VBox vBox1 = new VBox();
-        HBox hBox = new HBox();
-
-        hBox.getChildren().addAll(vBox1,vBox);
-
         GridPane infoGridPane = new GridPane();
         infoGridPane.setHgap(5);
         infoGridPane.setVgap(5);
@@ -59,8 +54,8 @@ public class NewHousePanel extends Application {
         infoGridPane.add(textFieldKapasiteetti,1,3);
 
         VBox root = new VBox(10);
-        root.getChildren().add(hBox);
         root.getChildren().add(infoGridPane);
+        root.getChildren().add(new Separator());
         root.getChildren().add(buttonOnly);
         root.setPadding(new Insets(10));
 
@@ -107,7 +102,7 @@ public class NewHousePanel extends Application {
 
         });
 
-        Scene scene = new Scene(root,300,185);
+        Scene scene = new Scene(root,300,183);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Uuden mökin tiedot");
         primaryStage.show();

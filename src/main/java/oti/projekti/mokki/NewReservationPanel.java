@@ -10,10 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -32,6 +29,9 @@ public class NewReservationPanel extends Application {
     TextField textFieldSposti = new TextField();
     TextField textFieldTilinumero = new TextField();
 
+    DatePicker datePickerStart = new DatePicker();
+    DatePicker datePickerEnd = new DatePicker();
+
     static int x = -1;
 
     public static void main(String[] args) {
@@ -41,8 +41,8 @@ public class NewReservationPanel extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        DatePicker datePickerStart = new DatePicker();
-        DatePicker datePickerEnd = new DatePicker();
+        datePickerStart.setMaxWidth(150);
+        datePickerEnd.setMaxWidth(150);
 
         Button buttonOnly = new Button("Tallenna");
 
@@ -58,18 +58,10 @@ public class NewReservationPanel extends Application {
         ToggleGroup radioButtonToggle1 = new ToggleGroup();
         radioButtonToggle1.getToggles().addAll(buttonNew,buttonOld);
 
-        RadioButton buttonCustomer = new RadioButton("Asiakas");
-        RadioButton buttonBusiness = new RadioButton("Yritys");
-        HBox hBoxRadioButtons2 = new HBox(36);
-        hBoxRadioButtons2.getChildren().addAll(buttonCustomer,buttonBusiness);
-
-        ToggleGroup radioButtonToggle2 = new ToggleGroup();
-        radioButtonToggle2.getToggles().addAll(buttonBusiness,buttonCustomer);
-
         VBox vBox = new VBox(5);
         VBox vBox1 = new VBox(15);
         vBox1.setPadding(new Insets(3,0,0,0));
-        HBox hBox = new HBox(20);
+        HBox hBox = new HBox(30);
 
         vBox1.getChildren().addAll(startDateText,endDateText);
         vBox.getChildren().addAll(datePickerStart,datePickerEnd);
@@ -78,32 +70,37 @@ public class NewReservationPanel extends Application {
         GridPane gridPane = new GridPane();
         gridPane.setVgap(5);
         gridPane.setHgap(5);
-        gridPane.add(textEtunimi,0,0);
-        gridPane.add(textSukunimi,0,1);
-        gridPane.add(textSposti,0,2);
-        gridPane.add(textTilinumero,0,3);
-        gridPane.add(textMokkiTunnus,0,4);
+        gridPane.add(textEtunimi,0,1);
+        gridPane.add(textSukunimi,0,2);
+        gridPane.add(textSposti,0,3);
+        gridPane.add(textTilinumero,0,4);
+        gridPane.add(textMokkiTunnus,0,0);
 
-        gridPane.add(textFieldEtunimi,1,0);
-        gridPane.add(textFieldSukunimi,1,1);
-        gridPane.add(textFieldSposti,1,2);
-        gridPane.add(textFieldTilinumero,1,3);
-        gridPane.add(textFieldMokkiTunnus,1,4);
-
-        Separator separator = new Separator();
-        Separator separator1 = new Separator();
-        Separator separator2 = new Separator();
+        gridPane.add(textFieldEtunimi,1,1);
+        gridPane.add(textFieldSukunimi,1,2);
+        gridPane.add(textFieldSposti,1,3);
+        gridPane.add(textFieldTilinumero,1,4);
+        gridPane.add(textFieldMokkiTunnus,1,0);
 
         VBox root = new VBox(15);
         root.setPadding(new Insets(10));
-        root.getChildren().add(hBox);
-        root.getChildren().add(separator);
         root.getChildren().add(hBoxRadioButtons1);
-        root.getChildren().add(hBoxRadioButtons2);
-        root.getChildren().add(separator1);
+        root.getChildren().add(new Separator());
+        root.getChildren().add(hBox);
+        root.getChildren().add(new Separator());
         root.getChildren().add(gridPane);
-        root.getChildren().add(separator2);
+        root.getChildren().add(new Separator());
         root.getChildren().add(buttonOnly);
+
+        buttonOld.setOnAction(event -> {
+                textTilinumero.setVisible(false);
+                textFieldTilinumero.setVisible(false);
+        });
+
+        buttonNew.setOnAction(event -> {
+            textTilinumero.setVisible(true);
+            textFieldTilinumero.setVisible(true);
+        });
 
         buttonOnly.setOnAction(actionEvent -> {
 
@@ -133,6 +130,12 @@ public class NewReservationPanel extends Application {
 
             if (startDate.isBefore(LocalDate.now())){
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Alkupäivämäärä ei voi olla menneisyydessä");
+                alert.showAndWait();
+                return;
+            }
+
+            if (checkForOverlapping(mokkiID)){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Päällekkäisyys toisen varauksen kanssa");
                 alert.showAndWait();
                 return;
             }
@@ -194,9 +197,52 @@ public class NewReservationPanel extends Application {
             }
         });
 
-        Scene scene = new Scene(root,300,393);
+        Scene scene = new Scene(root,250,370);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Uuden varauksen tiedot");
+        primaryStage.setTitle("Uusi varaus");
         primaryStage.show();
+    }
+
+    private boolean checkForOverlapping(int mokkiID){
+
+        String query = "SELECT varauksen_tunniste, varauksen_alkamispaiva, varauksen_paattymispaiva, mokin_tunniste from varaus";
+
+        try {
+
+            Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/mokkikodit","root","Tammikuu2024");
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()){
+                int checkMokkiID = resultSet.getInt("mokin_tunniste");
+                LocalDate alkuPaiva = LocalDate.parse(resultSet.getString("varauksen_alkamispaiva"));
+                LocalDate loppuPaiva = LocalDate.parse(resultSet.getString("varauksen_paattymispaiva"));
+
+                LocalDate alkuPaivaNew = datePickerStart.getValue();
+                LocalDate loppuPaivaNew = datePickerEnd.getValue();
+
+                if ( checkMokkiID == mokkiID ){ // se varauksen mökki id
+
+                    if (alkuPaivaNew.isBefore(alkuPaiva) && loppuPaivaNew.isAfter(alkuPaiva)){ // Loppupäivä keskellä varausta
+                        return true;
+                    }
+                    else if (alkuPaivaNew.isBefore(loppuPaiva) && loppuPaivaNew.isAfter(alkuPaiva)){ // Alkupäivä keskellä varausta
+                        return true;
+                    }
+                    else if ((alkuPaivaNew.isAfter(alkuPaiva) && alkuPaivaNew.isBefore(loppuPaiva)) || (loppuPaivaNew.isAfter(alkuPaiva) && loppuPaivaNew.isBefore(loppuPaiva))) { // "Varaus syö varauksen"
+                        return true;
+                    }
+                }
+            }
+
+            stmt.close();
+            conn.close();
+
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return false;
     }
 }
