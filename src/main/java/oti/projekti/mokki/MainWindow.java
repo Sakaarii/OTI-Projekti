@@ -93,14 +93,14 @@ public class MainWindow extends Application {
 
         buttonCustomer.setOnAction(actionEvent -> {
             secondaryStage = new Stage();
-            Customers customers = new Customers();
-            customers.start(secondaryStage);
+            CustomersPanel customersPanel = new CustomersPanel();
+            customersPanel.start(secondaryStage);
         });
 
         buttonNewReservation.setOnAction(actionEvent -> {
             secondaryStage = new Stage();
-            ReservationPanel reservationPanel = new ReservationPanel();
-            reservationPanel.start(secondaryStage);
+            NewReservationPanel newReservationPanel = new NewReservationPanel();
+            newReservationPanel.start(secondaryStage);
         });
 
         buttonRefreshList.setOnAction((actionEvent -> resetList()));

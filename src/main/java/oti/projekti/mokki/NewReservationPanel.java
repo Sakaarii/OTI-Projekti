@@ -18,9 +18,9 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
-public class ReservationPanel extends Application {
+public class NewReservationPanel extends Application {
 
-    Text textMokkiTunnus = new Text("Mökin Tunnus:");
+    Text textMokkiTunnus = new Text("Mökin ID:");
     Text textEtunimi = new Text("Etunimi:");
     Text textSukunimi = new Text("Sukunimi:");
     Text textSposti = new Text("Sähköposti:");
@@ -90,12 +90,19 @@ public class ReservationPanel extends Application {
         gridPane.add(textFieldTilinumero,1,3);
         gridPane.add(textFieldMokkiTunnus,1,4);
 
+        Separator separator = new Separator();
+        Separator separator1 = new Separator();
+        Separator separator2 = new Separator();
+
         VBox root = new VBox(15);
         root.setPadding(new Insets(10));
         root.getChildren().add(hBox);
+        root.getChildren().add(separator);
         root.getChildren().add(hBoxRadioButtons1);
         root.getChildren().add(hBoxRadioButtons2);
+        root.getChildren().add(separator1);
         root.getChildren().add(gridPane);
+        root.getChildren().add(separator2);
         root.getChildren().add(buttonOnly);
 
         buttonOnly.setOnAction(actionEvent -> {
@@ -187,7 +194,7 @@ public class ReservationPanel extends Application {
             }
         });
 
-        Scene scene = new Scene(root,300,340);
+        Scene scene = new Scene(root,300,393);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Uuden varauksen tiedot");
         primaryStage.show();

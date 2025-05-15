@@ -80,11 +80,23 @@ public class TiedotPanel extends Application {
             primaryStage.close();
         });
 
+        peruutaButton.setOnAction(actionEvent -> {
+            mokkinroTextField.setEditable(false);
+            osoiteTextField.setEditable(false);
+            kapasiteettiTextField.setEditable(false);
+            varaustilanneTextField.setEditable(false);
+            hintaTextField.setEditable(false);
+
+            mokkinroTextField.setText(mokkiID);
+            osoiteTextField.setText(osoite);
+            kapasiteettiTextField.setText(kapasiteetti);
+            varaustilanneTextField.setText(varaustilanne);
+            hintaTextField.setText(hinta);
+        });
+
         primaryStage.setScene(tiedotScene);
         primaryStage.setTitle("Tiedot");
         primaryStage.show();
-
-
 
     }
 

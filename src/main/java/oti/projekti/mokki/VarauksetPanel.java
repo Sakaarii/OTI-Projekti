@@ -106,7 +106,7 @@ public class VarauksetPanel extends Application {
     private void poistaVaraus() {
         try {
 
-            Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/mokkikodit", "root", "Tammikuu2024");
+            Connection conn = DriverManager.getConnection(MainWindow.connection,MainWindow.userName,MainWindow.userPassword);
             String sql = "DELETE FROM varaus WHERE varauksen_tunniste = ?";
 
             PreparedStatement stmt = conn.prepareStatement(sql);

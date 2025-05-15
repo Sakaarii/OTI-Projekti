@@ -15,7 +15,7 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Customers extends Application {
+public class CustomersPanel extends Application {
 
     //Asiakasta ei voi poistaa jos hänellä on varauksia.
 
@@ -80,7 +80,7 @@ public class Customers extends Application {
                 ArrayList<String> arvot = varaus.getValue();
 
                 String alustettu = String.format(
-                        "ID: %svarauksen_alkamispaiva: %svarauksen_paattymispaiva: %svarauksen_kesto: %smokin_tunnus: %s",
+                        "Varaus ID: %s\nAlkamispäivä: %s\nPäättymispäivä: %s\nKesto: %s päivää\nMökin tunnus: %s",
                         avain,
                         arvot.get(0),
                         arvot.get(1),
