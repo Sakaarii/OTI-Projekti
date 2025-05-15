@@ -33,6 +33,7 @@ public class Customers extends Application {
 
         Scene scene = new Scene(listView, 500, 500);
         primaryStage.setScene(scene);
+        primaryStage.setTitle("Asiakkaat");
         primaryStage.show();
 
     }

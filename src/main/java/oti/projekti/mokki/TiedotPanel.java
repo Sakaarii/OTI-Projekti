@@ -166,6 +166,13 @@ public class TiedotPanel extends Application {
         String newVaraustilanne = varaustilanneTextField.getText();
         String newHinta = hintaTextField.getText();
 
+        //Tarkastaa että tekstikentät eivät ole tyhjiä
+        if (newOsoite.isEmpty() || newKapasiteetti.isEmpty() || newVaraustilanne.isEmpty() || newHinta.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Tekstikentät ei voi olla tyhjiä");
+            alert.showAndWait();
+            return;
+        }
+
         String updatedInfo = String.format(
                 "osoite='%s', kapasiteetti=%s, varaustilanne='%s', varaushinta=%s",
                 newOsoite, newKapasiteetti, newVaraustilanne, newHinta

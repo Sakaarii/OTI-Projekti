@@ -110,6 +110,14 @@ public class ReservationPanel extends Application {
             LocalDate endDate = datePickerEnd.getValue();
             long length = ChronoUnit.DAYS.between(startDate,endDate);
 
+            //tarkistaa että tekstikentät eivät ole tyhjät, mutta ajankohat ja mökintunnus voi vielä olla
+            //Saattaa luoda virheen?
+            if (etunimi.isEmpty() || sukunimi.isEmpty() || sahkoposti.isEmpty() || tilinumero.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Tekstikentät ei voi olla tyhjiä");
+                alert.showAndWait();
+                return;
+            }
+
             //tekee uuden asiakkaan. Jos ei paina uusi asiakas painiketta, ei yritä luoda uutta asiakasta, vaan hakee vaan asiakkaan databasesta
             if (buttonNew.isSelected()){
                 try {

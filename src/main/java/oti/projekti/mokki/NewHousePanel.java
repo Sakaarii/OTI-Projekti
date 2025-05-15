@@ -3,6 +3,7 @@ package oti.projekti.mokki;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -22,7 +23,7 @@ public class NewHousePanel extends Application {
     }
 
     Text textOsoite = new Text("Mökin Osoite:");
-    Text textId = new Text("Mökin ID:");
+    Text textId = new Text("Mökin Varaustilanne:");
     Text textHinta = new Text("Mökin Hinta:");
     Text textKapasiteetti = new Text("Mökin max. kapasiteetti:");
 
@@ -68,9 +69,16 @@ public class NewHousePanel extends Application {
         buttonOnly.setOnAction(actionEvent -> {
 
             String osoite = textFieldOsoite.getText();
-            String Varaustilanne = textFieldId.getText();
+            String varaustilanne = textFieldId.getText();
             String hinta = textFieldHinta.getText();
             String kapasiteetti = textFieldKapasiteetti.getText();
+
+            //tarkastaa että tekstikentät eivät ole tyhjiä
+            if (osoite.isEmpty() || hinta.isEmpty() || varaustilanne.isEmpty() || kapasiteetti.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Tekstikentät ei voi olla tyhjiä");
+                alert.showAndWait();
+                return;
+            }
 
 
             // tekee uuden mokin
@@ -82,7 +90,7 @@ public class NewHousePanel extends Application {
                 PreparedStatement stmt = conn.prepareStatement(sql);
 
                 stmt.setString(1, osoite);
-                stmt.setString(2, Varaustilanne);
+                stmt.setString(2, varaustilanne);
                 stmt.setString(3, hinta);
                 stmt.setString(4, kapasiteetti);
                 stmt.executeUpdate();
