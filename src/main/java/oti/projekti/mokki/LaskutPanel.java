@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -108,6 +110,7 @@ public class LaskutPanel extends Application {
 
             //painikkeet
             Button buttonDeleteLasku = new Button("Poista Lasku");
+            Button buttonMarkAsPaid = new Button("Merkkaa Maksetuksi");
 
             Text textLine = new Text(formatted);
             textLine.setWrappingWidth(200);
@@ -115,7 +118,7 @@ public class LaskutPanel extends Application {
             HBox hboxLine = new HBox(20);
 
             VBox vBoxButtons = new VBox(10);
-            vBoxButtons.getChildren().addAll(buttonDeleteLasku);
+            vBoxButtons.getChildren().addAll(buttonDeleteLasku,buttonMarkAsPaid);
 
             // Lopullinen linja
             hboxLine.getChildren().addAll(textLine, vBoxButtons);
@@ -145,7 +148,20 @@ public class LaskutPanel extends Application {
                     System.out.println("Error: " + ex.getMessage());
                 }
             });
+            buttonMarkAsPaid.setOnAction(actionEvent -> {
+                markAsPaid(key);
+                resetLasku();
+            });
 
         }
+    }
+    private void markAsPaid(String laskuID) {
+
+        SQLDriver sqlDriver = new SQLDriver(MainWindow.connection, MainWindow.userName, MainWindow.userPassword);
+        String table = "lasku";
+        String where = "laskun_tunniste = " + laskuID;
+
+        sqlDriver.updateTable(table,"maksettu = 'maksettu'",where);
+
     }
 }
