@@ -1,6 +1,5 @@
 package oti.projekti.mokki;
 
-import com.sun.tools.javac.Main;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -23,13 +22,14 @@ public class VarauksetPanel extends Application {
     TextField kestoTextField = new TextField();
     TextField nimiTextField = new TextField();
     TextField spostiTextField = new TextField();
+    TextField puhelinnumeroTextField = new TextField();
 
     public VarauksetPanel(String varausID) {
         this.varausID = varausID;
     }
 
     GridPane varausGridPane = new GridPane();
-    Scene varauksetScene = new Scene(varausGridPane, 325, 220);
+    Scene varauksetScene = new Scene(varausGridPane, 325, 250);
 
     public static void main(String[] args) {
         launch(args);
@@ -54,7 +54,8 @@ public class VarauksetPanel extends Application {
         Label alkupvmLabel = new Label("Alku pvm:");
         Label loppupvmLabel = new Label("Loppu pvm:");
         Label kestoLabel = new Label("Kesto (pv):");
-        Label nimiLabel = new Label("Varaajan nimi:");
+        Label nimiLabel = new Label("Varaajan Nimi:");
+        Label puhelinnumeroLabel = new Label("Varaajan Puhelinnumero:");
         Label spostiLabel = new Label("Varaajan Sähköposti:");
 
         alkupvmTextField.setEditable(false);
@@ -71,9 +72,11 @@ public class VarauksetPanel extends Application {
         varausGridPane.add(kestoTextField, 1, 2);
         varausGridPane.add(nimiLabel, 0, 3);
         varausGridPane.add(nimiTextField, 1, 3);
-        varausGridPane.add(spostiLabel, 0, 4);
-        varausGridPane.add(spostiTextField, 1, 4);
-        varausGridPane.add(buttonPoistaVaraus,0,5);
+        varausGridPane.add(puhelinnumeroLabel, 0, 4);
+        varausGridPane.add(puhelinnumeroTextField, 1, 4);
+        varausGridPane.add(spostiLabel, 0, 5);
+        varausGridPane.add(spostiTextField, 1, 5);
+        varausGridPane.add(buttonPoistaVaraus,0,6);
 
         varausGridPane.setPadding(new Insets(15));
         varausGridPane.setHgap(10);
@@ -89,7 +92,7 @@ public class VarauksetPanel extends Application {
         SQLDriver sqlDriver = new SQLDriver(MainWindow.connection, MainWindow.userName, MainWindow.userPassword);
 
         String sqlQuery = "SELECT varaus.varauksen_alkamispaiva, varaus.varauksen_paattymispaiva, " +
-                "varaus.varauksen_kesto, asiakas.nimi, asiakas.sahkoposti " +
+                "varaus.varauksen_kesto, asiakas.nimi, asiakas.asiakastunnus, asiakas.sahkoposti " +
                 "FROM varaus " +
                 "JOIN asiakas ON varaus.asiakasID = asiakas.asiakasID " +
                 "where varaus.varauksen_tunniste =" + varausID;
@@ -100,7 +103,8 @@ public class VarauksetPanel extends Application {
         loppupvmTextField.setText(tiedot.get(0).get(1));
         kestoTextField.setText(tiedot.get(0).get(2));
         nimiTextField.setText(tiedot.get(0).get(3));
-        spostiTextField.setText(tiedot.get(0).get(4));
+        puhelinnumeroTextField.setText(tiedot.get(0).get(4));
+        spostiTextField.setText(tiedot.get(0).get(5));
 
     }
 

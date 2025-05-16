@@ -48,7 +48,8 @@ public class CustomersPanel extends Application {
 
         SQLDriver sqlDriver = new SQLDriver(MainWindow.connection, MainWindow.userName, MainWindow.userPassword);
 
-        Map<String, ArrayList<String>> lista = sqlDriver.tableQuery("Select * from asiakas", "asiakasID", new String[]{"nimi", "sahkoposti", "tilinumero"});
+        Map<String, ArrayList<String>> lista = sqlDriver.tableQuery
+                ("Select * from asiakas", "asiakasID", new String[]{"nimi", "asiakastunnus", "sahkoposti", "tilinumero"});
 
         // Lista asiakkaista
 
@@ -58,11 +59,12 @@ public class CustomersPanel extends Application {
 
             // asiakkaan teksti
             String formatted = String.format(
-                    "ID: %s\nNimi: %s\nSahkoposti: %s\nTilinumero: %s",
+                    "ID: %s\nNimi: %s\nPuhelinnumero: %s\nSahkoposti: %s\nTilinumero: %s",
                     key,
                     values.get(0),
                     values.get(1),
-                    values.get(2)
+                    values.get(2),
+                    values.get(3)
             );
             //listView.getItems().add(formatted);
 
@@ -71,7 +73,8 @@ public class CustomersPanel extends Application {
             Button buttonDeleteAsiakas = new Button("Poista asiakas");
 
             // varauksien teksti
-            Map<String, ArrayList<String>> kaikkiVaraukset = sqlDriver.tableQuery("SELECT * FROM varaus WHERE asiakasID ='" + key + "'", "varauksen_tunniste", new String[]{"varauksen_alkamispaiva", "varauksen_paattymispaiva", "varauksen_kesto","mokin_tunniste"});
+            Map<String, ArrayList<String>> kaikkiVaraukset = sqlDriver.tableQuery
+                    ("SELECT * FROM varaus WHERE asiakasID ='" + key + "'", "varauksen_tunniste", new String[]{"varauksen_alkamispaiva", "varauksen_paattymispaiva", "varauksen_kesto","mokin_tunniste"});
 
             VBox vBox = new VBox();
             vBox.setVisible(false);

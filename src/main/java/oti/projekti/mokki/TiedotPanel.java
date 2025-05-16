@@ -259,37 +259,3 @@ public class TiedotPanel extends Application {
     }
 
 }
-
-/*
-SQLDriver sqlDriver = new SQLDriver("jdbc:mysql://127.0.0.1:3306/mokkikodit", "root", "");
-        Map<String, ArrayList<String>> kaikkiVaraukset = sqlDriver.tableQuery("SELECT * FROM varaus WHERE mokin_tunniste ='" + mokkiID + "'", "varauksen_tunniste", new String[]{"varauksen_alkamispaiva", "varauksen_paattymispaiva", "varauksen_kesto"});
-
-
-        for (Map.Entry<String, ArrayList<String>> varaus : kaikkiVaraukset.entrySet()) {
-            String avain = varaus.getKey();
-            ArrayList<String> arvot = varaus.getValue();
-
-            String alustettu = String.format(
-                    "ID: %s\tAlku: %s\tLoppu: %s\tKesto: %s",
-                    avain,
-                    arvot.get(0),
-                    arvot.get(1),
-                    arvot.get(2)
-            );
-
-            Button buttonVarausInfo = new Button("Info");
-            Text textVaraus = new Text(alustettu);
-            HBox hBoxLine = new HBox(20);
-            hBoxLine.getChildren().addAll(textVaraus,buttonVarausInfo);
-
-            varausListView.getItems().add(hBoxLine);
-
-            buttonVarausInfo.setOnAction(actionEvent -> {
-                System.out.println("\n"+alustettu);
-                VarauksetPanel varauksetPanel = new VarauksetPanel(avain);
-                Stage secondaryStage = new Stage();
-                varauksetPanel.start(secondaryStage);
-            });
-
-        }
- */

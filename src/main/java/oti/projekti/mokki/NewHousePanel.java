@@ -8,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -17,7 +16,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.time.LocalDate;
 
 public class NewHousePanel extends Application {
 
@@ -108,7 +106,7 @@ public class NewHousePanel extends Application {
 
         });
 
-        Scene scene = new Scene(root,300,190);
+        Scene scene = new Scene(root,300,165);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Uuden mökin tiedot");
         primaryStage.show();

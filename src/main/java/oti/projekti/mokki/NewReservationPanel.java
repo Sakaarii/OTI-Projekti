@@ -22,12 +22,14 @@ public class NewReservationPanel extends Application {
     Text textSukunimi = new Text("Sukunimi:");
     Text textSposti = new Text("Sähköposti:");
     Text textTilinumero = new Text("Tilinumero:");
+    Text textPuhelinnumero = new Text("Puhelinnumero");
 
     TextField textFieldMokkiTunnus = new TextField();
     TextField textFieldEtunimi = new TextField();
     TextField textFieldSukunimi = new TextField();
     TextField textFieldSposti = new TextField();
     TextField textFieldTilinumero = new TextField();
+    TextField textFieldPuhelinnumero = new TextField();
 
     DatePicker datePickerStart = new DatePicker();
     DatePicker datePickerEnd = new DatePicker();
@@ -61,7 +63,7 @@ public class NewReservationPanel extends Application {
         VBox vBox = new VBox(5);
         VBox vBox1 = new VBox(15);
         vBox1.setPadding(new Insets(3,0,0,0));
-        HBox hBox = new HBox(30);
+        HBox hBox = new HBox(50);
 
         vBox1.getChildren().addAll(startDateText,endDateText);
         vBox.getChildren().addAll(datePickerStart,datePickerEnd);
@@ -70,17 +72,21 @@ public class NewReservationPanel extends Application {
         GridPane gridPane = new GridPane();
         gridPane.setVgap(5);
         gridPane.setHgap(5);
+
+        gridPane.add(textMokkiTunnus,0,0);
         gridPane.add(textEtunimi,0,1);
         gridPane.add(textSukunimi,0,2);
-        gridPane.add(textSposti,0,3);
-        gridPane.add(textTilinumero,0,4);
-        gridPane.add(textMokkiTunnus,0,0);
+        gridPane.add(textPuhelinnumero, 0, 3);
+        gridPane.add(textSposti,0,4);
+        gridPane.add(textTilinumero,0,5);
 
+        gridPane.add(textFieldMokkiTunnus,1,0);
         gridPane.add(textFieldEtunimi,1,1);
         gridPane.add(textFieldSukunimi,1,2);
-        gridPane.add(textFieldSposti,1,3);
-        gridPane.add(textFieldTilinumero,1,4);
-        gridPane.add(textFieldMokkiTunnus,1,0);
+        gridPane.add(textFieldPuhelinnumero, 1, 3);
+        gridPane.add(textFieldSposti,1,4);
+        gridPane.add(textFieldTilinumero,1,5);
+
 
         VBox root = new VBox(15);
         root.setPadding(new Insets(15));
@@ -95,11 +101,15 @@ public class NewReservationPanel extends Application {
         buttonOld.setOnAction(event -> {
                 textTilinumero.setVisible(false);
                 textFieldTilinumero.setVisible(false);
+                textFieldSposti.setVisible(false);
+                textSposti.setVisible(false);
         });
 
         buttonNew.setOnAction(event -> {
             textTilinumero.setVisible(true);
             textFieldTilinumero.setVisible(true);
+            textFieldSposti.setVisible(true);
+            textSposti.setVisible(true);
         });
 
         buttonOnly.setOnAction(actionEvent -> {
@@ -109,6 +119,7 @@ public class NewReservationPanel extends Application {
             String sukunimi = textFieldSukunimi.getText();
             String nimi = etunimi + " " + sukunimi;
             String sahkoposti = textFieldSposti.getText();
+            String puhelinnumero = textPuhelinnumero.getText();;
             String tilinumero = textFieldTilinumero.getText();
             LocalDate startDate = datePickerStart.getValue();
             LocalDate endDate = datePickerEnd.getValue();
@@ -150,7 +161,7 @@ public class NewReservationPanel extends Application {
                     PreparedStatement stmt = connection.prepareStatement(sqlAsiakas);
 
                     stmt.setString(1, nimi);
-                    stmt.setString(2, "xxx");
+                    stmt.setString(2, puhelinnumero);
                     stmt.setString(3, sahkoposti);
                     stmt.setString(4,tilinumero);
 
@@ -164,10 +175,10 @@ public class NewReservationPanel extends Application {
                 }
             }
 
-            // nimi ja sähköposti on tällä hetkellä miten erittelee asiakkaat
+            // nimi ja puhelinnumero on miten erittelee asiakkaat
 
             SQLDriver sqlDriver = new SQLDriver(MainWindow.connection,MainWindow.userName,MainWindow.userPassword);
-            ArrayList<ArrayList<String>> listOfIDs = sqlDriver.returnAllQuery( "SELECT asiakasId FROM asiakas WHERE nimi='" + nimi + "' AND sahkoposti='" + sahkoposti + "'");
+            ArrayList<ArrayList<String>> listOfIDs = sqlDriver.returnAllQuery( "SELECT asiakasId FROM asiakas WHERE nimi='" + nimi + "' AND asiakastunnus='" + puhelinnumero + "'");
             x = Integer.parseInt(listOfIDs.get(0).get(0));
 
 
@@ -203,7 +214,7 @@ public class NewReservationPanel extends Application {
 
         });
 
-        Scene scene = new Scene(root,250,370);
+        Scene scene = new Scene(root,275,400);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Uusi varaus");
         primaryStage.show();
