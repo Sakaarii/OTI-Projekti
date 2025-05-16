@@ -55,37 +55,37 @@ public class NewReservationPanel extends Application {
         RadioButton buttonOld = new RadioButton("Vanha asiakas");
 
         HBox hBoxRadioButtons1 = new HBox(10);
-        hBoxRadioButtons1.getChildren().addAll(buttonNew,buttonOld);
+        hBoxRadioButtons1.getChildren().addAll(buttonNew, buttonOld);
 
         ToggleGroup radioButtonToggle1 = new ToggleGroup();
-        radioButtonToggle1.getToggles().addAll(buttonNew,buttonOld);
+        radioButtonToggle1.getToggles().addAll(buttonNew, buttonOld);
 
         VBox vBox = new VBox(5);
         VBox vBox1 = new VBox(15);
-        vBox1.setPadding(new Insets(3,0,0,0));
+        vBox1.setPadding(new Insets(3, 0, 0, 0));
         HBox hBox = new HBox(50);
 
-        vBox1.getChildren().addAll(startDateText,endDateText);
-        vBox.getChildren().addAll(datePickerStart,datePickerEnd);
-        hBox.getChildren().addAll(vBox1,vBox);
+        vBox1.getChildren().addAll(startDateText, endDateText);
+        vBox.getChildren().addAll(datePickerStart, datePickerEnd);
+        hBox.getChildren().addAll(vBox1, vBox);
 
         GridPane gridPane = new GridPane();
         gridPane.setVgap(5);
         gridPane.setHgap(5);
 
-        gridPane.add(textMokkiTunnus,0,0);
-        gridPane.add(textEtunimi,0,1);
-        gridPane.add(textSukunimi,0,2);
+        gridPane.add(textMokkiTunnus, 0, 0);
+        gridPane.add(textEtunimi, 0, 1);
+        gridPane.add(textSukunimi, 0, 2);
         gridPane.add(textPuhelinnumero, 0, 3);
-        gridPane.add(textSposti,0,4);
-        gridPane.add(textTilinumero,0,5);
+        gridPane.add(textSposti, 0, 4);
+        gridPane.add(textTilinumero, 0, 5);
 
-        gridPane.add(textFieldMokkiTunnus,1,0);
-        gridPane.add(textFieldEtunimi,1,1);
-        gridPane.add(textFieldSukunimi,1,2);
+        gridPane.add(textFieldMokkiTunnus, 1, 0);
+        gridPane.add(textFieldEtunimi, 1, 1);
+        gridPane.add(textFieldSukunimi, 1, 2);
         gridPane.add(textFieldPuhelinnumero, 1, 3);
-        gridPane.add(textFieldSposti,1,4);
-        gridPane.add(textFieldTilinumero,1,5);
+        gridPane.add(textFieldSposti, 1, 4);
+        gridPane.add(textFieldTilinumero, 1, 5);
 
 
         VBox root = new VBox(15);
@@ -99,10 +99,10 @@ public class NewReservationPanel extends Application {
         root.getChildren().add(buttonOnly);
 
         buttonOld.setOnAction(event -> {
-                textTilinumero.setVisible(false);
-                textFieldTilinumero.setVisible(false);
-                textFieldSposti.setVisible(false);
-                textSposti.setVisible(false);
+            textTilinumero.setVisible(false);
+            textFieldTilinumero.setVisible(false);
+            textFieldSposti.setVisible(false);
+            textSposti.setVisible(false);
         });
 
         buttonNew.setOnAction(event -> {
@@ -119,33 +119,33 @@ public class NewReservationPanel extends Application {
             String sukunimi = textFieldSukunimi.getText();
             String nimi = etunimi + " " + sukunimi;
             String sahkoposti = textFieldSposti.getText();
-            String puhelinnumero = textPuhelinnumero.getText();;
+            String puhelinnumero = textFieldPuhelinnumero.getText();
             String tilinumero = textFieldTilinumero.getText();
             LocalDate startDate = datePickerStart.getValue();
             LocalDate endDate = datePickerEnd.getValue();
-            long length = ChronoUnit.DAYS.between(startDate,endDate);
+            long length = ChronoUnit.DAYS.between(startDate, endDate);
 
             //tarkistaa että tekstikentät eivät ole tyhjät, mutta mökintunnus voi vielä olla
-            if (etunimi.isEmpty() || sukunimi.isEmpty() || sahkoposti.isEmpty() || (tilinumero.isEmpty() && buttonNew.isSelected())
+            if (etunimi.isEmpty() || sukunimi.isEmpty() || puhelinnumero.isEmpty() || (sahkoposti.isEmpty() && buttonNew.isSelected()) || (tilinumero.isEmpty() && buttonNew.isSelected())
                     || startDate == null || endDate == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Tekstikentät ei voi olla tyhjiä");
                 alert.showAndWait();
                 return;
             }
 
-            if (startDate.isAfter(endDate)){
+            if (startDate.isAfter(endDate)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Alkupäivämäärä ei voi olla loppupäivämäärän jälkeen");
                 alert.showAndWait();
                 return;
             }
 
-            if (startDate.isBefore(LocalDate.now())){
+            if (startDate.isBefore(LocalDate.now())) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Alkupäivämäärä ei voi olla menneisyydessä");
                 alert.showAndWait();
                 return;
             }
 
-            if (checkForOverlapping(mokkiID)){
+            if (checkForOverlapping(mokkiID)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Päällekkäisyys toisen varauksen kanssa");
                 alert.showAndWait();
                 return;
@@ -153,9 +153,9 @@ public class NewReservationPanel extends Application {
 
 
             //tekee uuden asiakkaan. Jos ei paina uusi asiakas painiketta, ei yritä luoda uutta asiakasta, vaan hakee vaan asiakkaan databasesta
-            if (buttonNew.isSelected()){
+            if (buttonNew.isSelected()) {
                 try {
-                    Connection connection = DriverManager.getConnection(MainWindow.connection,MainWindow.userName,MainWindow.userPassword);
+                    Connection connection = DriverManager.getConnection(MainWindow.connection, MainWindow.userName, MainWindow.userPassword);
                     String sqlAsiakas = "INSERT INTO asiakas(nimi,asiakastunnus,sahkoposti,tilinumero) VALUES (?, ?, ?, ?)";
 
                     PreparedStatement stmt = connection.prepareStatement(sqlAsiakas);
@@ -163,7 +163,7 @@ public class NewReservationPanel extends Application {
                     stmt.setString(1, nimi);
                     stmt.setString(2, puhelinnumero);
                     stmt.setString(3, sahkoposti);
-                    stmt.setString(4,tilinumero);
+                    stmt.setString(4, tilinumero);
 
                     stmt.executeUpdate();
 
@@ -177,15 +177,15 @@ public class NewReservationPanel extends Application {
 
             // nimi ja puhelinnumero on miten erittelee asiakkaat
 
-            SQLDriver sqlDriver = new SQLDriver(MainWindow.connection,MainWindow.userName,MainWindow.userPassword);
-            ArrayList<ArrayList<String>> listOfIDs = sqlDriver.returnAllQuery( "SELECT asiakasId FROM asiakas WHERE nimi='" + nimi + "' AND asiakastunnus='" + puhelinnumero + "'");
+            SQLDriver sqlDriver = new SQLDriver(MainWindow.connection, MainWindow.userName, MainWindow.userPassword);
+            ArrayList<ArrayList<String>> listOfIDs = sqlDriver.returnAllQuery("SELECT asiakasId FROM asiakas WHERE nimi='" + nimi + "' AND asiakastunnus='" + puhelinnumero + "'");
             x = Integer.parseInt(listOfIDs.get(0).get(0));
 
 
             // tekee uuden varauksen
             try {
 
-                Connection conn = DriverManager.getConnection(MainWindow.connection,MainWindow.userName,MainWindow.userPassword);
+                Connection conn = DriverManager.getConnection(MainWindow.connection, MainWindow.userName, MainWindow.userPassword);
                 String sql = "INSERT INTO varaus(varauksen_alkamispaiva, varauksen_paattymispaiva, varauksen_kesto, mokin_tunniste, asiakasID) VALUES (?, ?, ?, ?, ?)";
 
                 PreparedStatement stmt = conn.prepareStatement(sql);
@@ -203,6 +203,7 @@ public class NewReservationPanel extends Application {
                 MainWindow.checkReservedSituation();
                 MainWindow.resetList();
                 //MainWindow.listView.getItems().add(stringy);
+                createLasku(getSumma(mokkiID), endDate);
 
             } catch (Exception ex) {
                 System.out.println("Error: " + ex.getMessage());
@@ -214,25 +215,25 @@ public class NewReservationPanel extends Application {
 
         });
 
-        Scene scene = new Scene(root,275,400);
+        Scene scene = new Scene(root, 275, 400);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Uusi varaus");
         primaryStage.show();
     }
 
-    private boolean checkForOverlapping(int mokkiID){
+    private boolean checkForOverlapping(int mokkiID) {
 
         String query = "SELECT varauksen_tunniste, varauksen_alkamispaiva, varauksen_paattymispaiva, mokin_tunniste from varaus";
 
         try {
 
-            Connection conn = DriverManager.getConnection(MainWindow.connection,MainWindow.userName,MainWindow.userPassword);
+            Connection conn = DriverManager.getConnection(MainWindow.connection, MainWindow.userName, MainWindow.userPassword);
 
             PreparedStatement stmt = conn.prepareStatement(query);
 
             ResultSet resultSet = stmt.executeQuery();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 int checkMokkiID = resultSet.getInt("mokin_tunniste");
                 LocalDate alkuPaiva = LocalDate.parse(resultSet.getString("varauksen_alkamispaiva"));
                 LocalDate loppuPaiva = LocalDate.parse(resultSet.getString("varauksen_paattymispaiva"));
@@ -240,15 +241,13 @@ public class NewReservationPanel extends Application {
                 LocalDate alkuPaivaNew = datePickerStart.getValue();
                 LocalDate loppuPaivaNew = datePickerEnd.getValue();
 
-                if ( checkMokkiID == mokkiID ){ // se varauksen mökki id
+                if (checkMokkiID == mokkiID) { // se varauksen mökki id
 
-                    if (alkuPaivaNew.isBefore(alkuPaiva) && loppuPaivaNew.isAfter(alkuPaiva)){ // Loppupäivä keskellä varausta
+                    if (alkuPaivaNew.isBefore(alkuPaiva) && loppuPaivaNew.isAfter(alkuPaiva)) { // Loppupäivä keskellä varausta
                         return true;
-                    }
-                    else if (alkuPaivaNew.isBefore(loppuPaiva) && loppuPaivaNew.isAfter(alkuPaiva)){ // Alkupäivä keskellä varausta
+                    } else if (alkuPaivaNew.isBefore(loppuPaiva) && loppuPaivaNew.isAfter(alkuPaiva)) { // Alkupäivä keskellä varausta
                         return true;
-                    }
-                    else if ((alkuPaivaNew.isAfter(alkuPaiva) && alkuPaivaNew.isBefore(loppuPaiva)) || (loppuPaivaNew.isAfter(alkuPaiva) && loppuPaivaNew.isBefore(loppuPaiva))) { // "Varaus syö varauksen"
+                    } else if ((alkuPaivaNew.isAfter(alkuPaiva) && alkuPaivaNew.isBefore(loppuPaiva)) || (loppuPaivaNew.isAfter(alkuPaiva) && loppuPaivaNew.isBefore(loppuPaiva))) { // "Varaus syö varauksen"
                         return true;
                     }
                 }
@@ -262,4 +261,78 @@ public class NewReservationPanel extends Application {
         }
         return false;
     }
+
+
+    private int getRecentVaraus() {
+        try {
+
+            Connection connection = DriverManager.getConnection(MainWindow.connection, MainWindow.userName, MainWindow.userPassword);
+            String sqlQueryVaraus = "SELECT max(varauksen_tunniste) from varaus";
+
+            PreparedStatement stmt = connection.prepareStatement(sqlQueryVaraus);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            if (resultSet.next()) return resultSet.getInt(1);
+
+            stmt.close();
+            connection.close();
+
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return -1;
+    }
+
+    private int getSumma(int mokkiID) {
+        try {
+
+            Connection connection = DriverManager.getConnection(MainWindow.connection, MainWindow.userName, MainWindow.userPassword);
+            String sqlQueryVaraus = "SELECT varaushinta from mokki where mokin_tunniste = ?";
+
+            PreparedStatement stmt = connection.prepareStatement(sqlQueryVaraus);
+
+            stmt.setInt(1, mokkiID);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            if (resultSet.next()) return resultSet.getInt(1);
+
+            stmt.close();
+            connection.close();
+
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return -1;
+    }
+
+    private void createLasku(int summa, LocalDate endDate) {
+
+        LocalDate eraPaiva = endDate.plusDays(10);
+        String maksettu = "Maksamaton";
+
+        try {
+
+            Connection connection = DriverManager.getConnection(MainWindow.connection, MainWindow.userName, MainWindow.userPassword);
+            String sql = "INSERT INTO lasku(summa, erapaiva, maksettu, varauksen_tunniste) VALUES (?, ?, ?, ?)";
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+
+            stmt.setInt(1, summa);
+            stmt.setString(2, endDate.toString());
+            stmt.setString(3, maksettu);
+            stmt.setInt(4, getRecentVaraus());
+
+            stmt.executeUpdate();
+
+            stmt.close();
+            connection.close();
+
+
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+    }
 }
+
