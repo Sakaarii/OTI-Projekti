@@ -29,7 +29,7 @@ public class VarauksetPanel extends Application {
     }
 
     GridPane varausGridPane = new GridPane();
-    Scene varauksetScene = new Scene(varausGridPane, 325, 250);
+    Scene varauksetScene = new Scene(varausGridPane, 325, 260);
 
     public static void main(String[] args) {
         launch(args);
