@@ -16,6 +16,8 @@ import javafx.stage.Stage;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.LocalDate;
 
 public class NewHousePanel extends Application {
 
@@ -24,12 +26,10 @@ public class NewHousePanel extends Application {
     }
 
     Text textOsoite = new Text("Mökin Osoite:");
-    Text textId = new Text("Mökin Varaustilanne:");
     Text textHinta = new Text("Mökin Hinta:");
     Text textKapasiteetti = new Text("Mökin max. kapasiteetti:");
 
     TextField textFieldOsoite = new TextField();
-    TextField textFieldId = new TextField();
     TextField textFieldHinta = new TextField();
     TextField textFieldKapasiteetti = new TextField();
 
@@ -45,13 +45,11 @@ public class NewHousePanel extends Application {
 
         infoGridPane.add(textOsoite,0,0);
         infoGridPane.add(textHinta,0,1);
-        infoGridPane.add(textId,0,2);
-        infoGridPane.add(textKapasiteetti,0,3);
+        infoGridPane.add(textKapasiteetti,0,2);
 
         infoGridPane.add(textFieldOsoite,1,0);
         infoGridPane.add(textFieldHinta,1,1);
-        infoGridPane.add(textFieldId,1,2);
-        infoGridPane.add(textFieldKapasiteetti,1,3);
+        infoGridPane.add(textFieldKapasiteetti,1,2);
 
         VBox root = new VBox(10);
         root.getChildren().add(infoGridPane);
@@ -64,13 +62,19 @@ public class NewHousePanel extends Application {
         buttonOnly.setOnAction(actionEvent -> {
 
             String osoite = textFieldOsoite.getText();
-            String varaustilanne = textFieldId.getText();
+            String varaustilanne = "vapaa";
             String hinta = textFieldHinta.getText();
             String kapasiteetti = textFieldKapasiteetti.getText();
 
             //tarkastaa että tekstikentät eivät ole tyhjiä
             if (osoite.isEmpty() || hinta.isEmpty() || varaustilanne.isEmpty() || kapasiteetti.isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Tekstikentät ei voi olla tyhjiä");
+                alert.showAndWait();
+                return;
+            }
+
+            if (checkForOverlapping(osoite)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Osoitteen omaava mökki on jo olemassa");
                 alert.showAndWait();
                 return;
             }
@@ -109,4 +113,38 @@ public class NewHousePanel extends Application {
         primaryStage.setTitle("Uuden mökin tiedot");
         primaryStage.show();
     }
+
+    private boolean checkForOverlapping(String osoite){
+
+        String query = "SELECT osoite from mokki";
+
+        try {
+
+            Connection conn = DriverManager.getConnection(MainWindow.connection,MainWindow.userName,MainWindow.userPassword);
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()){
+
+                String checkOsoite = resultSet.getString("osoite");
+
+                if ( checkOsoite.equalsIgnoreCase(osoite) ){ // Katsoo kaikki mökit läpi, että ei ole päällekkäisyyksiä luonnissa
+
+                    return true;
+                }
+
+                return false;
+            }
+
+            stmt.close();
+            conn.close();
+
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        return false;
+    }
+
 }

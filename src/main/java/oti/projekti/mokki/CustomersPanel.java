@@ -30,7 +30,7 @@ public class CustomersPanel extends Application {
 
         resetCustomer();
 
-        Scene scene = new Scene(listView, 500, 500);
+        Scene scene = new Scene(listView, 1000, 500);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Asiakkaat");
         primaryStage.show();
@@ -56,6 +56,7 @@ public class CustomersPanel extends Application {
             String key = i.getKey();
             ArrayList<String> values = i.getValue();
 
+            // asiakkaan teksti
             String formatted = String.format(
                     "ID: %s\nNimi: %s\nSahkoposti: %s\nTilinumero: %s",
                     key,
@@ -65,9 +66,11 @@ public class CustomersPanel extends Application {
             );
             //listView.getItems().add(formatted);
 
+            //painikkeet
             Button buttonView = new Button("Naytä varaukset");
             Button buttonDeleteAsiakas = new Button("Poista asiakas");
 
+            // varauksien teksti
             Map<String, ArrayList<String>> kaikkiVaraukset = sqlDriver.tableQuery("SELECT * FROM varaus WHERE asiakasID ='" + key + "'", "varauksen_tunniste", new String[]{"varauksen_alkamispaiva", "varauksen_paattymispaiva", "varauksen_kesto","mokin_tunniste"});
 
             VBox vBox = new VBox();
@@ -80,7 +83,7 @@ public class CustomersPanel extends Application {
                 ArrayList<String> arvot = varaus.getValue();
 
                 String alustettu = String.format(
-                        "Varaus ID: %s\nAlkamispäivä: %s\nPäättymispäivä: %s\nKesto: %s päivää\nMökin tunnus: %s",
+                        "Varaus ID: %-5s\t Alkamispäivä: %-10s\t Päättymispäivä: %-10s\t Kesto(päivää): %-2s\t Mökin tunnus: %-5s",
                         avain,
                         arvot.get(0),
                         arvot.get(1),
@@ -88,16 +91,21 @@ public class CustomersPanel extends Application {
                         arvot.get(3)
                 );
 
+                // varauksen teksti
                 Text textVaraus = new Text(alustettu);
                 vBox.getChildren().add(textVaraus);
             }
 
+            // Asiakkaan teksti
             Text textLine = new Text(formatted);
+            textLine.setWrappingWidth(200);
 
             HBox hboxLine = new HBox(20);
+
             VBox vBoxButtons = new VBox(10);
             vBoxButtons.getChildren().addAll(buttonView,buttonDeleteAsiakas);
 
+            // Lopullinen linja
             hboxLine.getChildren().addAll(textLine, vBoxButtons,vBox);
 
             //listView.getItems().add(buttonView);
