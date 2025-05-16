@@ -29,7 +29,7 @@ public class MainWindow extends Application {
     // Yhteydet
     static final String connection = "jdbc:mysql://localhost:3306/mokkikodit";
     static final String userName = "root";
-    static final String userPassword = "";
+    static final String userPassword = "Tammikuu2024";
 
     static ListView<Object> listView = new ListView<>();
     static Stage secondaryStage;

@@ -203,7 +203,7 @@ public class NewReservationPanel extends Application {
                 MainWindow.checkReservedSituation();
                 MainWindow.resetList();
                 //MainWindow.listView.getItems().add(stringy);
-                createLasku(getSumma(mokkiID), endDate);
+                createLasku(getSumma(mokkiID), startDate, endDate);
 
             } catch (Exception ex) {
                 System.out.println("Error: " + ex.getMessage());
@@ -307,10 +307,11 @@ public class NewReservationPanel extends Application {
         return -1;
     }
 
-    private void createLasku(int summa, LocalDate endDate) {
+    private void createLasku(int summa, LocalDate startDate, LocalDate endDate) {
 
         LocalDate eraPaiva = endDate.plusDays(10);
         String maksettu = "Maksamaton";
+        int totalSum = (int) ChronoUnit.DAYS.between(startDate,endDate) * summa;
 
         try {
 
@@ -319,8 +320,8 @@ public class NewReservationPanel extends Application {
 
             PreparedStatement stmt = connection.prepareStatement(sql);
 
-            stmt.setInt(1, summa);
-            stmt.setString(2, endDate.toString());
+            stmt.setInt(1, totalSum);
+            stmt.setString(2, eraPaiva.toString());
             stmt.setString(3, maksettu);
             stmt.setInt(4, getRecentVaraus());
 
