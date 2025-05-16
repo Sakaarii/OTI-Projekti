@@ -257,5 +257,4 @@ public class TiedotPanel extends Application {
 
         }
     }
-
 }

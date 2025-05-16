@@ -72,6 +72,8 @@ public class CustomersPanel extends Application {
             Button buttonView = new Button("Naytä varaukset");
             Button buttonDeleteAsiakas = new Button("Poista asiakas");
 
+            Button buttonLasku = new Button("Näytä Laskut");
+
             // varauksien teksti
             Map<String, ArrayList<String>> kaikkiVaraukset = sqlDriver.tableQuery
                     ("SELECT * FROM varaus WHERE asiakasID ='" + key + "'", "varauksen_tunniste", new String[]{"varauksen_alkamispaiva", "varauksen_paattymispaiva", "varauksen_kesto","mokin_tunniste"});
@@ -105,8 +107,8 @@ public class CustomersPanel extends Application {
 
             HBox hboxLine = new HBox(20);
 
-            VBox vBoxButtons = new VBox(10);
-            vBoxButtons.getChildren().addAll(buttonView,buttonDeleteAsiakas);
+            VBox vBoxButtons = new VBox(5);
+            vBoxButtons.getChildren().addAll(buttonView,buttonDeleteAsiakas,buttonLasku);
 
             // Lopullinen linja
             hboxLine.getChildren().addAll(textLine, vBoxButtons,vBox);
@@ -120,6 +122,12 @@ public class CustomersPanel extends Application {
                 else vBox.setVisible(true);
                 System.out.println("\n" + formatted);
 
+            });
+
+            buttonLasku.setOnAction(actionEvent -> {
+                Stage secondaryStage = new Stage();
+                LaskutPanel laskutPanel = new LaskutPanel(key, values.get(0), values.get(1),values.get(3));
+                laskutPanel.start(secondaryStage);
             });
 
             buttonDeleteAsiakas.setOnAction(actionEvent -> {

@@ -27,9 +27,9 @@ import java.util.Map;
 public class MainWindow extends Application {
 
     // Yhteydet
-    static String connection = "jdbc:mysql://localhost:3306/mokkikodit";
-    static String userName = "root";
-    static String userPassword = "Tammikuu2024";
+    static final String connection = "jdbc:mysql://localhost:3306/mokkikodit";
+    static final String userName = "root";
+    static final String userPassword = "Tammikuu2024";
 
     static ListView<Object> listView = new ListView<>();
     static Stage secondaryStage;
